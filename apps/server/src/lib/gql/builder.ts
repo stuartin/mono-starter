@@ -12,6 +12,7 @@ import { DateTimeResolver } from "graphql-scalars";
 
 import { ERR } from "./errors";
 import { drizzle } from "#lib/db";
+import { ValidAuthContext } from "#features/auth/context";
 
 interface Root<T> {
     Context: T;
@@ -19,6 +20,9 @@ interface Root<T> {
     DrizzleSchema: typeof schema;
     AuthScopes: {
         user: boolean;
+    };
+    AuthContexts: {
+        user: T & ValidAuthContext;
     };
     Scalars: {
         DateTime: {

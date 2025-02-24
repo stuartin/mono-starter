@@ -35,6 +35,8 @@
         "wrangler": "^3.109.1"
     },
     "imports": {
+        "#features/auth/context": "./src/features/auth/auth.context.ts",
+        "#features/auth/cookie": "./src/features/auth/lib/cookie.ts",
         "#lib/db": "./src/lib/db/index.ts",
         "#lib/db/schema": "./src/lib/db/schema.ts",
         "#lib/gql/builder": "./src/lib/gql/builder.ts",

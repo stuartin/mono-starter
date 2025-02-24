@@ -4,8 +4,10 @@ import { initContextCache } from "@pothos/core";
 
 import { schema } from "#lib/gql/schema";
 import { DB, drizzle } from "#lib/db";
+import { validateSessionTokenCookie } from "#features/auth/cookie";
+import { AuthContext } from "#features/auth/context";
 
-export type Context = YogaInitialContext & CloudflareBindings & {
+export type Context = YogaInitialContext & CloudflareBindings & AuthContext & {
     db: DB;
 };
 
@@ -14,7 +16,7 @@ export const yoga = createYoga<CloudflareBindings>({
     maskedErrors: false,
     context: async ctx => ({
         ...initContextCache(),
-        // ...(await validateSessionTokenCookie(ctx.request.cookieStore))
+        ...(await validateSessionTokenCookie(ctx.request.cookieStore)),
         db: drizzle(ctx.DB),
     }),
 });
