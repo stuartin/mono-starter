@@ -2,8 +2,10 @@
   "name": "@mono/shared",
   "devDependencies": {
     "@antfu/eslint-config": "^4.3.0",
+    "@gql.tada/svelte-support": "^1.0.1",
     "eslint": "^9.21.0",
     "eslint-plugin-format": "^1.0.1",
+    "gql.tada": "^1.8.10",
     "jiti": "^2.4.2",
     "typescript-eslint": "^8.24.1"
   },

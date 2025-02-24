@@ -1,1 +1,1 @@
-console.log('server')
+import { graphql } from "@mono/shared/graphql"

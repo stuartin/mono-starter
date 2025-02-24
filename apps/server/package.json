@@ -7,7 +7,7 @@
         "eslint": "^9.21.0"
     },
     "imports": {
-        "#lib/*": "./src/lib/*"
+        "#lib/db": "./src/lib/db/index.ts"
     },
     "private": true,
     "scripts": {
