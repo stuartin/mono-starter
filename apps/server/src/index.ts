@@ -1,0 +1,1 @@
+import { graphql } from "@mono/shared/graphql"

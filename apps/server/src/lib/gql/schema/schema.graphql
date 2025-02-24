@@ -1,0 +1,214 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+"""Area"""
+type Area {
+  climbs: [Climb!]
+  createdAt: DateTime
+  guide: Guide
+  id: ID
+  name: String
+  parentArea: Area
+  rockTypes: [AreaToRockType!]
+  slug: String
+  topos: [Topo!]
+  updatedAt: DateTime
+}
+
+type AreaToRockType {
+  area: Area
+  rockType: RockType
+}
+
+"""Climb"""
+type Climb {
+  area: Area
+  climbType: ClimbType
+  createdAt: DateTime
+  description: String
+  fa: String
+  gear: String
+  grade: Grade
+  guide: Guide
+  height: Int
+  id: ID
+  name: String
+  pitches: [Pitch!]
+  slug: String
+  updatedAt: DateTime
+}
+
+"""ClimbType"""
+type ClimbType {
+  createdAt: DateTime
+  id: ID
+  name: ClimbTypeNameRef
+  updatedAt: DateTime
+}
+
+enum ClimbTypeNameRef {
+  boulder
+  mixed
+  sport
+  trad
+}
+
+input CountriesFilterInput {
+  id: ID
+  name: String
+}
+
+"""Country"""
+type Country {
+  createdAt: DateTime
+  id: ID
+  name: String
+  states: [State!]
+  updatedAt: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+"""Grade"""
+type Grade {
+  createdAt: DateTime
+  gradeSystem: GradeSystem
+  id: ID
+  maxScore: Int
+  minScore: Int
+  updatedAt: DateTime
+  value: String
+}
+
+"""GradeSystem"""
+type GradeSystem {
+  createdAt: DateTime
+  id: ID
+  name: String
+  shortName: String
+  updatedAt: DateTime
+}
+
+"""Guide"""
+type Guide {
+  areas: [Area!]
+  country: Country
+  createdAt: DateTime
+  gradeSystems: [GuideToGradeSystem!]
+  heightSystem: HeightSystem
+  id: ID
+  name: String
+  notices: [Notice!]
+  slug: String
+  state: State
+  updatedAt: DateTime
+  visibility: VisibilityRef
+}
+
+input GuideFilterInput {
+  id: ID
+  name: String
+}
+
+type GuideToGradeSystem {
+  gradeSystem: GradeSystem
+  guide: Guide
+}
+
+"""HeightSystem"""
+type HeightSystem {
+  createdAt: DateTime
+  id: ID
+  name: HeightSystemNameRef
+  updatedAt: DateTime
+}
+
+enum HeightSystemNameRef {
+  ft
+  m
+}
+
+"""Media"""
+type Media {
+  alt: String
+  area: Area
+  climb: Climb
+  createdAt: DateTime
+  guide: Guide
+  height: Int
+  id: ID
+  updatedAt: DateTime
+  url: String
+  width: Int
+}
+
+type Mutation {
+  addGuide(countryId: ID!, description: String!, gradeSystemIds: [ID!]!, heightSystemId: ID!, name: String!, stateId: ID): Guide
+  deleteGuide(id: ID!): Boolean
+  updateGuide(countryId: String, description: String, gradeSystemIds: [String!], heightSystemId: String, id: ID!, name: String, stateId: String): Guide
+}
+
+"""Notice"""
+type Notice {
+  area: Area
+  climb: Climb
+  createdAt: DateTime
+  description: String
+  guide: Guide
+  id: ID
+  summary: String
+  updatedAt: DateTime
+}
+
+"""Pitch"""
+type Pitch {
+  climb: Climb
+  createdAt: DateTime
+  description: String
+  grade: Grade
+  id: ID
+  updatedAt: DateTime
+}
+
+type Query {
+  countries(filter: CountriesFilterInput, limit: Int! = 10): [Country!]
+  country(filter: CountriesFilterInput!): Country
+  guide(filter: GuideFilterInput!): Guide
+  guides(filter: GuideFilterInput): [Guide!]
+}
+
+"""RockType"""
+type RockType {
+  createdAt: DateTime
+  id: ID
+  name: String
+  updatedAt: DateTime
+}
+
+"""State"""
+type State {
+  createdAt: DateTime
+  id: ID
+  name: String
+  updatedAt: DateTime
+}
+
+"""Topo"""
+type Topo {
+  area: Area
+  createdAt: DateTime
+  guide: Guide
+  id: ID
+  media: Media
+  updatedAt: DateTime
+}
+
+enum VisibilityRef {
+  private
+  public
+}

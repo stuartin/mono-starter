@@ -1,0 +1,3 @@
+{
+    "extends": "@mono/shared/tsconfig.json"
+}

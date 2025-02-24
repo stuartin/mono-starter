@@ -1,0 +1,16 @@
+{
+    "name": "@mono/server",
+    "dependencies": {
+        "@mono/shared": "workspace:*"
+    },
+    "devDependencies": {
+        "eslint": "^9.21.0"
+    },
+    "imports": {
+        "#lib/db": "./src/lib/db/index.ts"
+    },
+    "private": true,
+    "scripts": {
+        "lint": "eslint ."
+    }
+}
