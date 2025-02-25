@@ -8,12 +8,12 @@ export const { createInsertSchema, createSelectSchema, createUpdateSchema } = cr
     },
 });
 
-
 export const user_table = sqliteTable("user", {
     id: text().primaryKey().$defaultFn(() => createId()),
+    passwordHash: text().notNull(),
     name: text().notNull(),
     email: text().notNull(),
-    passwordHash: text().notNull(),
+    avatar: text(),
     updatedAt: integer({ mode: "timestamp" })
         .notNull()
         .$defaultFn(() => new Date())
