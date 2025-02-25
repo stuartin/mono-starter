@@ -45,8 +45,8 @@ export const builder = new SchemaBuilder<Root<Context>>({
         schema,
     },
     scopeAuth: {
-        authScopes: _ctx => ({
-            user: true,
+        authScopes: ctx => ({
+            user: !!ctx.user,
         }),
         unauthorizedError: (_parent, _context, _info, result) => new GraphQLError(result.message, ERR.UNAUTHORIZED),
     },

@@ -7,7 +7,12 @@ import { hashPassword, verifyPasswordHash } from "./lib/password";
 import { setSessionTokenCookie, deleteSessionTokenCookie } from "./lib/cookie";
 import { generateSessionToken, createSession, invalidateSession } from "./lib/session";
 
-const UNAUTHORIZED_ERROR = new GraphQLError("An error occurred.", ERR.UNAUTHORIZED)
+export const PasswordZod = z
+    .string()
+    .min(8, 'Minimum 8 character(s)')
+    .refine((value) => /[a-z]{1,}/.test(value), 'Minimum 1 lowercase character(s)')
+    .refine((value) => /[A-Z]{1,}/.test(value), 'Minimum 1 uppercase character(s)')
+    .refine((value) => /[!@#$%^&*()\-__+.]{1,}/.test(value), 'Minimum 1 special character(s)');
 
 export const User = builder.drizzleObject("user_table", {
     name: "User",
@@ -39,7 +44,7 @@ builder.mutationFields(t => ({
                 input: z.object({
                     name: z.string().min(3),
                     email: z.string().email(),
-                    password: z.string().min(8)
+                    password: PasswordZod
                 })
             })
         },
@@ -49,12 +54,13 @@ builder.mutationFields(t => ({
             password: t.input.string(),
         },
         resolve: async (root, { input }, ctx) => {
+            const REGISTER_ERROR = new GraphQLError("An error occurred, please try again later.", ERR.SERVER)
 
             // Check for existing
             const existingUser = await ctx.db.query.user_table.findFirst({
                 where: (f, { eq }) => eq(f.email, input.email)
             })
-            if (existingUser) throw UNAUTHORIZED_ERROR
+            if (existingUser) throw REGISTER_ERROR
 
 
             // Create user
@@ -79,7 +85,7 @@ builder.mutationFields(t => ({
             schema: z.object({
                 input: z.object({
                     email: z.string().email(),
-                    password: z.string().min(8)
+                    password: PasswordZod
                 })
             })
         },
@@ -88,16 +94,17 @@ builder.mutationFields(t => ({
             password: t.input.string(),
         },
         resolve: async (root, { input }, ctx) => {
+            const LOGIN_ERROR = new GraphQLError("Invalid username or password.", ERR.UNAUTHORIZED)
 
             // Get User
             const user = await ctx.db.query.user_table.findFirst({
                 where: (f, { eq }) => eq(f.email, input.email)
             })
-            if (!user) throw UNAUTHORIZED_ERROR
+            if (!user) throw LOGIN_ERROR
 
             // Validate Password
             const validPassword = await verifyPasswordHash(user.passwordHash, input.password, ctx);
-            if (!validPassword) throw UNAUTHORIZED_ERROR
+            if (!validPassword) throw LOGIN_ERROR
 
             // Create a session
             const token = generateSessionToken();
@@ -111,9 +118,8 @@ builder.mutationFields(t => ({
         user: true
     }).field({
         type: "Boolean",
-        unauthorizedError: () => new GraphQLError("Not logged in", ERR.UNAUTHORIZED),
+        unauthorizedError: () => new GraphQLError("Not logged in.", ERR.UNAUTHORIZED),
         resolve: async (root, args, ctx) => {
-
             invalidateSession(ctx.db, ctx.session.id);
             deleteSessionTokenCookie(ctx.request.cookieStore);
 
