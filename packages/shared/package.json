@@ -9,5 +9,8 @@
     "jiti": "^2.4.2",
     "typescript-eslint": "^8.24.1"
   },
-  "private": true
+  "private": true,
+  "scripts": {
+    "codegen": "gql-tada generate-output --tsconfig tsconfig.json"
+  }
 }
