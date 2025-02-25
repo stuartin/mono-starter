@@ -1,3 +1,4 @@
+import { DB } from "#lib/db";
 import { AuthContext } from "../auth.context";
 import { validateSessionToken } from "./session";
 
@@ -27,7 +28,7 @@ export function deleteSessionTokenCookie(store: Request["cookieStore"]): void {
     })
 }
 
-export async function validateSessionTokenCookie(store: Request["cookieStore"]): Promise<AuthContext> {
+export async function validateSessionTokenCookie(db: DB, store: Request["cookieStore"]): Promise<AuthContext> {
     let result: AuthContext = {
         user: null,
         session: null
@@ -37,7 +38,7 @@ export async function validateSessionTokenCookie(store: Request["cookieStore"]):
     const token = await store?.get("session");
     if (!token) return result
 
-    result = await validateSessionToken(token.value);
+    result = await validateSessionToken(db, token.value);
 
     // Invalid session
     if (result.session === null) {

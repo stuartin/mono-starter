@@ -11,6 +11,7 @@
         "@pothos/plugin-scope-auth": "^4.1.1",
         "@pothos/plugin-with-input": "^4.1.0",
         "@pothos/plugin-zod": "^4.1.0",
+        "@whatwg-node/server-plugin-cookies": "^1.0.4",
         "drizzle-orm": "^0.39.3",
         "drizzle-zod": "^0.7.0",
         "graphql": "^16.10.0",
@@ -37,6 +38,7 @@
     "imports": {
         "#features/auth/context": "./src/features/auth/auth.context.ts",
         "#features/auth/cookie": "./src/features/auth/lib/cookie.ts",
+        "#features/auth/schema": "./src/features/auth/auth.schema.ts",
         "#lib/db": "./src/lib/db/index.ts",
         "#lib/db/schema": "./src/lib/db/schema.ts",
         "#lib/gql/builder": "./src/lib/gql/builder.ts",
@@ -46,6 +48,7 @@
     },
     "private": true,
     "scripts": {
+        "dev": "wrangler dev",
         "lint": "eslint ."
     }
 }
