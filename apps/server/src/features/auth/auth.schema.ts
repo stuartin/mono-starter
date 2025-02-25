@@ -58,7 +58,7 @@ builder.mutationFields(t => ({
 
 
             // Create user
-            const passwordHash = await hashPassword(input.password);
+            const passwordHash = await hashPassword(input.password, ctx);
             const [user] = await ctx.db.insert(user_table).values({
                 name: input.name,
                 email: input.email,
@@ -96,7 +96,7 @@ builder.mutationFields(t => ({
             if (!user) throw UNAUTHORIZED_ERROR
 
             // Validate Password
-            const validPassword = await verifyPasswordHash(user.passwordHash, input.password);
+            const validPassword = await verifyPasswordHash(user.passwordHash, input.password, ctx);
             if (!validPassword) throw UNAUTHORIZED_ERROR
 
             // Create a session

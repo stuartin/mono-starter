@@ -1,9 +1,8 @@
 {
     "name": "@mono/server",
     "dependencies": {
+        "@cloudflare/workers-wasi": "^0.0.5",
         "@mono/shared": "workspace:*",
-        "@oslojs/crypto": "^1.0.1",
-        "@oslojs/encoding": "^1.1.0",
         "@paralleldrive/cuid2": "^2.2.2",
         "@pothos/core": "^4.3.0",
         "@pothos/plugin-drizzle": "^0.6.0",
