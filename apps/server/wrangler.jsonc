@@ -1,0 +1,81 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+    "$schema": "node_modules/wrangler/config-schema.json",
+    "name": "mono-starter",
+    "main": "src/index.ts",
+    "compatibility_date": "2025-02-04",
+    "compatibility_flags": [
+        "nodejs_compat"
+    ],
+    /**
+     * Local environment
+     */
+    "assets": {
+        "directory": "../spa/dist/",
+        "binding": "ASSETS"
+    },
+    "d1_databases": [
+        {
+            "binding": "DB",
+            "database_name": "local",
+            "database_id": "local",
+            "migrations_dir": "src/lib/db/migrations"
+        }
+    ],
+    "env": {
+        /**
+        * Staging environment
+        */
+        "staging": {
+            "name": "mono-starter-stg",
+            "workers_dev": true,
+            "d1_databases": [
+                {
+                    "binding": "DB",
+                    "database_name": "mono-starter-stg",
+                    "database_id": "337b50e8-51c0-4ad8-b0d5-438c1e4b141a",
+                    "migrations_dir": "src/lib/db/migrations"
+                }
+            ]
+        },
+        /**
+        * Production environment
+        */
+        "production": {
+            "name": "mono-starter-prd",
+            "workers_dev": false,
+            // "routes": [{
+            //     "pattern": "api.<my_domain>.com",
+            //     "custom_domain": true
+            // }]
+            "observability": {
+                "enabled": true
+            },
+            "d1_databases": [
+                {
+                    "binding": "DB",
+                    "database_name": "mono-starter-prd",
+                    "database_id": "bd83d9a7-eb67-4b1c-9468-1a4cd26425ec",
+                    "migrations_dir": "src/lib/db/migrations"
+                }
+            ]
+        }
+    }
+    /**
+     * Environment Variables
+     * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
+     */
+    // "vars": { "MY_VARIABLE": "production_value" },
+    /**
+     * Note: Use secrets to store sensitive data.
+     * https://developers.cloudflare.com/workers/configuration/secrets/
+     */
+    /**
+     * Service Bindings (communicate between multiple Workers)
+     * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
+     */
+    // "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
+}

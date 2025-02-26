@@ -1,7 +1,4 @@
 {
-    "include": [
-        "**/*.ts",
-    ],
     "compilerOptions": {
         "target": "ESNext",
         "lib": [
@@ -16,7 +13,8 @@
             {
                 "name": "gql.tada/ts-plugin",
                 "schema": "http://127.0.0.1:8787/graphql",
-                "tadaOutputLocation": "./graphql/graphql-env.d.ts"
+                "tadaOutputLocation": "./graphql/graphql-env.d.ts",
+                "trackFieldUsage": false
             }
         ]
     }

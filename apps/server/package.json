@@ -1,16 +1,68 @@
 {
     "name": "@mono/server",
     "dependencies": {
-        "@mono/shared": "workspace:*"
+        "@cloudflare/workers-wasi": "^0.0.5",
+        "@mono/shared": "workspace:*",
+        "@oslojs/crypto": "^1.0.1",
+        "@oslojs/encoding": "^1.1.0",
+        "@paralleldrive/cuid2": "^2.2.2",
+        "@pothos/core": "^4.3.0",
+        "@pothos/plugin-drizzle": "^0.6.0",
+        "@pothos/plugin-relay": "^4.3.0",
+        "@pothos/plugin-scope-auth": "^4.1.1",
+        "@pothos/plugin-with-input": "^4.1.0",
+        "@pothos/plugin-zod": "^4.1.0",
+        "@whatwg-node/server-plugin-cookies": "^1.0.4",
+        "drizzle-orm": "^0.39.3",
+        "drizzle-zod": "^0.7.0",
+        "graphql": "^16.10.0",
+        "graphql-scalars": "^1.24.1",
+        "graphql-yoga": "^5.12.0",
+        "slugify": "^1.6.6",
+        "zod": "^3.24.2"
     },
     "devDependencies": {
-        "eslint": "^9.21.0"
+        "@cloudflare/vitest-pool-workers": "^0.7.1",
+        "@cloudflare/workers-types": "^4.20250214.0",
+        "@libsql/client": "^0.14.0",
+        "@types/node": "^22.13.5",
+        "cross-env": "^7.0.3",
+        "dotenv": "^16.4.7",
+        "drizzle-kit": "^0.30.4",
+        "drizzle-seed": "0.3.0",
+        "eslint": "^9.21.0",
+        "rimraf": "^6.0.1",
+        "tsx": "^4.19.2",
+        "vitest": "^3.0.6",
+        "wrangler": "^3.109.1"
     },
     "imports": {
-        "#lib/db": "./src/lib/db/index.ts"
+        "#features/auth/context": "./src/features/auth/auth.context.ts",
+        "#features/auth/cookie": "./src/features/auth/lib/cookie.ts",
+        "#features/auth/schema": "./src/features/auth/auth.schema.ts",
+        "#lib/db": "./src/lib/db/index.ts",
+        "#lib/db/schema": "./src/lib/db/schema.ts",
+        "#lib/db/seed": "./src/lib/db/seed.ts",
+        "#lib/gql/builder": "./src/lib/gql/builder.ts",
+        "#lib/gql/errors": "./src/lib/gql/errors.ts",
+        "#lib/gql/schema": "./src/lib/gql/schema.ts",
+        "#lib/utils/*": "./src/lib/utils/*",
+        "#lib/yoga": "./src/lib/yoga/index.ts",
+        "#test/request": "./test/lib/request.ts",
+        "#test/user": "./test/lib/user.ts"
     },
     "private": true,
     "scripts": {
-        "lint": "eslint ."
+        "db:generate": "drizzle-kit generate",
+        "db:init": "wrangler d1 execute DB --local --command \"SELECT 1;\" > nul 2>&1 && drizzle-kit migrate",
+        "db:migrate:prd": "wrangler d1 migrations apply DB --remote",
+        "db:migrate:stg": "wrangler d1 migrations apply DB --preview",
+        "db:push": "drizzle-kit push",
+        "deploy:db:stg": "wrangler d1 migrations apply DB --remote --env staging",
+        "deploy:stg": "pnpm deploy:db:stg && wrangler deploy --minify --env staging",
+        "dev": "wrangler dev",
+        "lint": "eslint .",
+        "test": "vitest",
+        "typegen": "wrangler types --env-interface CloudflareBindings"
     }
 }
