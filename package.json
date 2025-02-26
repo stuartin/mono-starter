@@ -4,7 +4,9 @@
     "typescript": "^5.7.3"
   },
   "scripts": {
-    "deploy:stg": "pnpm --filter @mono/spa build && pnpm --filter @mono/server deploy:stg",
+    "deploy:stg": "pnpm --filter @mono/spa build:stg && pnpm --filter @mono/server deploy:stg",
+    "deploy:prd": "pnpm --filter @mono/spa build:prd && pnpm --filter @mono/server deploy:prd",
+    "dev": "pnpm --recursive dev",
     "codegen": "pnpm --filter @mono/shared codegen"
   },
   "pnpm": {

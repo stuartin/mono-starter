@@ -1,13 +1,16 @@
 {
     "name": "@mono/spa",
     "dependencies": {
-        "@mono/shared": "workspace:*"
+        "@mono/shared": "workspace:*",
+        "@urql/svelte": "^4.2.2",
+        "graphql": "^16.10.0"
     },
     "devDependencies": {
         "@playwright/test": "^1.49.1",
         "@sveltejs/adapter-static": "^3.0.8",
         "@sveltejs/kit": "^2.16.0",
         "@sveltejs/vite-plugin-svelte": "^5.0.0",
+        "dotenv-cli": "^8.0.0",
         "eslint": "^9.21.0",
         "svelte": "^5.0.0",
         "svelte-check": "^4.0.0",
@@ -17,6 +20,8 @@
     "private": true,
     "scripts": {
         "build": "vite build",
+        "build:prd": "dotenv -e .env.production -- pnpm build",
+        "build:stg": "dotenv -e .env.staging -- pnpm build",
         "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
         "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
         "dev": "vite dev",

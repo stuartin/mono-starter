@@ -18,7 +18,10 @@ D1 databases hosted on Cloudflare all use wrangler to perform migrations.
 - `pnpm deploy:prd` - Deploy the migrations and code to the production envrionment
 
 ## @mono/client
-- todo
+
+## Proxy
+
+In order to avoid CORS problems when developing locally, we use a vite proxy (`vite.config.ts`) to redirect `/graphql` to the `@mono/server`
 
 ## @mono/shared
 - eslint

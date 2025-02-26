@@ -6,7 +6,7 @@ export async function setSessionTokenCookie(store: Request["cookieStore"], token
     await store?.set({
         name: 'session',
         value: token,
-        secure: process.env.NODE_ENV === "development" ? false : true,
+        secure: true,
         expires,
         path: "/",
         sameSite: 'lax',
@@ -19,7 +19,7 @@ export async function deleteSessionTokenCookie(store: Request["cookieStore"]): P
     await store?.set({
         name: 'session',
         value: undefined,
-        secure: process.env.NODE_ENV === "development" ? false : true,
+        secure: true,
         expires: new Date(),
         path: "/",
         sameSite: 'lax',
