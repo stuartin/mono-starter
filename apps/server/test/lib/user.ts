@@ -1,45 +1,43 @@
 import { graphql } from "@mono/shared/graphql";
 import { request } from "./request";
-import { expect } from "vitest";
 import { omitEmpty } from "#lib/utils/omit-empty.js";
 
-export type TestUser = {
-    id: string
-    name: string
-    email: string
-    password: string
-}
+export const MutationRegister = graphql(`
+    mutation Register($input: MutationRegisterInput!) {
+        register(
+            input: $input
+        ) {
+            id
+            name
+        }
+    }    
+`)
 
-export async function newUser(name: string, email: string) {
+export async function newUser(name = genName(), email = genEmail()) {
+    const password = genPassword()
 
-    const password = generateValidPassword()
-
-    const q = graphql(`
-        mutation Register($input: MutationRegisterInput!) {
-            register(
-                input: $input
-            ) {
-                id
-                name
-            }
-        }    
-    `)
-
-    const req = await request(q, { input: { email, name, password } })
-    const json = await req.json()
-
-    expect(json.errors).toBeUndefined()
-    expect(json.data.register).not.toBeNull()
+    const res = await request(MutationRegister, { input: { email, name, password } })
+    const json = await res.json()
 
     return {
         ...omitEmpty(json.data.register!),
-        email,
-        password
+        cookie: res.headers.get("set-cookie") ?? "",
+        input: {
+            email,
+            password
+        }
     }
 }
 
+export function genName() {
+    return `test-user-${Date.now()}`
+}
 
-function generateValidPassword(length: number = 12): string {
+export function genEmail() {
+    return `test-user-${Date.now()}@test.com`
+}
+
+export function genPassword(length: number = 12): string {
     const lowercase = "abcdefghijklmnopqrstuvwxyz";
     const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const special = "!@#$%^&*()-__+.";

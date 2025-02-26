@@ -2,8 +2,8 @@ import { DB } from "#lib/db";
 import { AuthContext } from "../auth.context";
 import { validateSessionToken } from "./session";
 
-export function setSessionTokenCookie(store: Request["cookieStore"], token: string, expires: Date): void {
-    store?.set({
+export async function setSessionTokenCookie(store: Request["cookieStore"], token: string, expires: Date): Promise<void> {
+    await store?.set({
         name: 'session',
         value: token,
         secure: process.env.NODE_ENV === "development" ? false : true,
@@ -15,8 +15,8 @@ export function setSessionTokenCookie(store: Request["cookieStore"], token: stri
     })
 }
 
-export function deleteSessionTokenCookie(store: Request["cookieStore"]): void {
-    store?.set({
+export async function deleteSessionTokenCookie(store: Request["cookieStore"]): Promise<void> {
+    await store?.set({
         name: 'session',
         value: undefined,
         secure: process.env.NODE_ENV === "development" ? false : true,
@@ -42,11 +42,11 @@ export async function validateSessionTokenCookie(db: DB, store: Request["cookieS
 
     // Invalid session
     if (result.session === null) {
-        deleteSessionTokenCookie(store);
+        await deleteSessionTokenCookie(store);
         return result
     }
 
     // Valid session
-    setSessionTokenCookie(store, token.value, result.session.expiresAt);
+    await setSessionTokenCookie(store, token.value, result.session.expiresAt);
     return result
 }

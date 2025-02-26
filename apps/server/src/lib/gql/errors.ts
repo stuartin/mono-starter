@@ -9,6 +9,7 @@ export const ERR = {
     INVALID: {
         extensions: {
             code: "INVALID",
+            http: { status: 400 }
         },
     },
     SERVER: {

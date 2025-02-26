@@ -74,7 +74,7 @@ builder.mutationFields(t => ({
             // Create a session
             const token = generateSessionToken();
             const session = await createSession(ctx.db, token, user.id);
-            setSessionTokenCookie(ctx.request.cookieStore, token, session.expiresAt);
+            await setSessionTokenCookie(ctx.request.cookieStore, token, session.expiresAt);
 
             return user;
         }
@@ -96,6 +96,9 @@ builder.mutationFields(t => ({
         resolve: async (root, { input }, ctx) => {
             const LOGIN_ERROR = new GraphQLError("Invalid username or password.", ERR.UNAUTHORIZED)
 
+            // User already logged in
+            if (ctx.user) return ctx.user
+
             // Get User
             const user = await ctx.db.query.user_table.findFirst({
                 where: (f, { eq }) => eq(f.email, input.email)
@@ -109,7 +112,7 @@ builder.mutationFields(t => ({
             // Create a session
             const token = generateSessionToken();
             const session = await createSession(ctx.db, token, user.id);
-            setSessionTokenCookie(ctx.request.cookieStore, token, session.expiresAt);
+            await setSessionTokenCookie(ctx.request.cookieStore, token, session.expiresAt);
 
             return user
         }
@@ -118,10 +121,10 @@ builder.mutationFields(t => ({
         user: true
     }).field({
         type: "Boolean",
-        unauthorizedError: () => new GraphQLError("Not logged in.", ERR.UNAUTHORIZED),
+        // unauthorizedError: () => new GraphQLError("Not logged in.", ERR.UNAUTHORIZED),
         resolve: async (root, args, ctx) => {
-            invalidateSession(ctx.db, ctx.session.id);
-            deleteSessionTokenCookie(ctx.request.cookieStore);
+            await invalidateSession(ctx.db, ctx.session.id);
+            await deleteSessionTokenCookie(ctx.request.cookieStore);
 
             return true;
         }

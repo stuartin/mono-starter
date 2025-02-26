@@ -4,26 +4,31 @@ import { TadaDocumentNode, VariablesOf, ResultOf } from "@mono/shared/graphql"
 import { createExecutionContext, env, waitOnExecutionContext } from "cloudflare:test";
 import worker from "../../src";
 
-export async function request<T extends TadaDocumentNode<any, any>>(query: T, variables?: VariablesOf<T>) {
+export async function request<T extends TadaDocumentNode<any, any>>(query: T, variables: VariablesOf<T>, cookie: string = "") {
     const ctx = createExecutionContext();
 
     const req = new Request("http://127.0.0.1:8787/graphql", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            "Cookie": cookie
         },
         body: JSON.stringify({
             query: print(query),
             variables,
         }),
     });
+
     // @ts-expect-error env type uses TestContext
     const res = await worker.fetch(req, env, ctx);
 
     await waitOnExecutionContext(ctx);
 
     return {
-        ...res,
+        status: res.status,
+        statusText: res.statusText,
+        headers: res.headers,
+        ok: res.ok,
         json: async () => res.json<GraphQlResponse<ResultOf<T>>>(),
     };
 }

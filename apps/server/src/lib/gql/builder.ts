@@ -55,6 +55,7 @@ export const builder = new SchemaBuilder<Root<Context>>({
             const details = {
                 extensions: {
                     code: ERR.INVALID.extensions.code,
+                    http: ERR.INVALID.extensions.http,
                     errors: zodError.errors.map(err => ({
                         path: err.path,
                         message: err.message,
