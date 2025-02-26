@@ -14,6 +14,7 @@ export type Context = YogaInitialContext & CloudflareBindings & AuthContext & {
 export const yoga = createYoga<CloudflareBindings>({
     schema,
     maskedErrors: false,
+    landingPage: false,
     context: async (ctx) => {
         const db = drizzle(ctx.DB)
         const authContext = await validateSessionTokenCookie(db, ctx.request.cookieStore)
