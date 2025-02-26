@@ -18,8 +18,9 @@ node_modules/
 
 # env
 .env
-.env.production
 .dev.vars
+.env.*
+!.env.example
 
 # logs
 logs/
@@ -32,3 +33,11 @@ lerna-debug.log*
 
 # misc
 .DS_Store
+
+# Sveltekit
+.svelte-kit
+build
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*

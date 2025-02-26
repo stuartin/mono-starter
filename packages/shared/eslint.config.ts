@@ -4,6 +4,7 @@ const config = (...args: Awaitable<TypedFlatConfigItem | TypedFlatConfigItem[]>[
     antfu({
         type: "app",
         typescript: true,
+        svelte: true,
         formatters: true,
         stylistic: {
             indent: 4,

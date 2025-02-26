@@ -4,6 +4,16 @@
     "typescript": "^5.7.3"
   },
   "scripts": {
+    "deploy:stg": "pnpm --filter @mono/spa build && pnpm --filter @mono/server deploy:stg",
     "codegen": "pnpm --filter @mono/shared codegen"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
+  "packageManager": "pnpm@9.2.0",
+  "engines": {
+    "node": "^20"
   }
 }

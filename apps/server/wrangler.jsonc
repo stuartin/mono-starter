@@ -11,10 +11,10 @@
         "nodejs_compat"
     ],
     /**
-     * Local environment
+     * Defaults
      */
     "assets": {
-        "directory": "../spa/dist/",
+        "directory": "../spa/build/",
         "binding": "ASSETS"
     },
     "d1_databases": [
