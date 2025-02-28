@@ -5,6 +5,7 @@ import DrizzlePlugin from "@pothos/plugin-drizzle";
 import PothosScopeAuthPlugin from "@pothos/plugin-scope-auth";
 import ZodValidationPlugin from "@pothos/plugin-zod";
 import WithInputPlugin from '@pothos/plugin-with-input';
+import SimpleObjectsPlugin from '@pothos/plugin-simple-objects';
 
 import * as schema from "#lib/db/schema";
 import { GraphQLError } from "graphql";
@@ -39,7 +40,7 @@ export const builder = new SchemaBuilder<Root<Context>>({
             required: true,
         },
     },
-    plugins: [PothosScopeAuthPlugin, WithInputPlugin, ZodValidationPlugin, DrizzlePlugin],
+    plugins: [PothosScopeAuthPlugin, WithInputPlugin, SimpleObjectsPlugin, ZodValidationPlugin, DrizzlePlugin],
     drizzle: {
         client: ctx => drizzle(ctx.DB),
         schema,

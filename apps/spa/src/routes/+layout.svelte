@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { client } from "$lib/graphql/client";
-  import { setContextClient } from "@urql/svelte";
+  import { setUserState } from "$lib/state/User.svelte";
 
   let { children } = $props();
 
-  setContextClient(client);
+  setUserState();
 </script>
 
 <main>

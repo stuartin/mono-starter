@@ -25,6 +25,7 @@
         "@cloudflare/vitest-pool-workers": "^0.7.1",
         "@cloudflare/workers-types": "^4.20250214.0",
         "@libsql/client": "^0.14.0",
+        "@pothos/plugin-simple-objects": "^4.1.0",
         "@types/node": "^22.13.5",
         "cross-env": "^7.0.3",
         "dotenv": "^16.4.7",

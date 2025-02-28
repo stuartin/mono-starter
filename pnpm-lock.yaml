@@ -81,6 +81,9 @@ importers:
       '@libsql/client':
         specifier: ^0.14.0
         version: 0.14.0
+      '@pothos/plugin-simple-objects':
+        specifier: ^4.1.0
+        version: 4.1.0(@pothos/core@4.4.0(graphql@16.10.0))(graphql@16.10.0)
       '@types/node':
         specifier: ^22.13.5
         version: 22.13.5
@@ -117,6 +120,12 @@ importers:
       '@mono/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@urql/core':
+        specifier: ^5.1.0
+        version: 5.1.0(graphql@16.10.0)
+      '@urql/exchange-graphcache':
+        specifier: ^7.2.2
+        version: 7.2.2(@urql/core@5.1.0(graphql@16.10.0))(graphql@16.10.0)
       '@urql/svelte':
         specifier: ^4.2.2
         version: 4.2.2(@urql/core@5.1.0(graphql@16.10.0))(svelte@5.20.2)
@@ -124,9 +133,6 @@ importers:
         specifier: ^16.10.0
         version: 16.10.0
     devDependencies:
-      '@gql.tada/svelte-support':
-        specifier: ^1.0.1
-        version: 1.0.1(svelte@5.20.2)(typescript@5.7.3)
       '@playwright/test':
         specifier: ^1.49.1
         version: 1.50.1
@@ -139,6 +145,9 @@ importers:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^5.0.0
         version: 5.0.3(svelte@5.20.2)(vite@6.1.1(@types/node@22.13.5)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))
+      '@urql/devtools':
+        specifier: ^2.0.3
+        version: 2.0.3(@urql/core@5.1.0(graphql@16.10.0))(graphql@16.10.0)
       dotenv-cli:
         specifier: ^8.0.0
         version: 8.0.0
@@ -1480,6 +1489,12 @@ packages:
       '@pothos/core': '*'
       graphql: '>=16.6.0'
 
+  '@pothos/plugin-simple-objects@4.1.0':
+    resolution: {integrity: sha512-R4u3Hnd6btWt1XHG3bgBa463XbDgH380GRWg88FMrDfoqqkB1EI02gsWgmASqHHJgFI35V9Tc62loGy2XpTUyA==}
+    peerDependencies:
+      '@pothos/core': '*'
+      graphql: '>=16.6.0'
+
   '@pothos/plugin-with-input@4.1.0':
     resolution: {integrity: sha512-iq8kBexRe3wqn3q8VlPeVq6OIJb60NcYBqIgWA35l5q6WRbSDwwzPyMY9EIcA5E8+vnbuPHUbRy4BAvrfif8Sg==}
     peerDependencies:
@@ -1711,6 +1726,17 @@ packages:
 
   '@urql/core@5.1.0':
     resolution: {integrity: sha512-yC3sw8yqjbX45GbXxfiBY8GLYCiyW/hLBbQF9l3TJrv4ro00Y0ChkKaD9I2KntRxAVm9IYBqh0awX8fwWAe/Yw==}
+
+  '@urql/devtools@2.0.3':
+    resolution: {integrity: sha512-TktPLiBS9LcBPHD6qcnb8wqOVcg3Bx0iCtvQ80uPpfofwwBGJmqnQTjUdEFU6kwaLOFZULQ9+Uo4831G823mQw==}
+    peerDependencies:
+      '@urql/core': '>= 1.14.0'
+      graphql: '>= 0.11.0'
+
+  '@urql/exchange-graphcache@7.2.2':
+    resolution: {integrity: sha512-hSLbPkLTYKYb9zTB+fSZhFxe+zMOaXuIcSsBiaa+bxT8d5Cxt1ed/oAJfUV9vY27SJ+b0UYq6NXWHBhYOjUWNg==}
+    peerDependencies:
+      '@urql/core': ^5.0.0
 
   '@urql/svelte@4.2.2':
     resolution: {integrity: sha512-6ntLGsWcnNtaMZVmFpePfFTSpYxYpznCAqnuvLDjt7Oa7YqHcFiyPnz7IIsiPD9VE6hZSi0+RwmRk5BMba/teQ==}
@@ -4663,6 +4689,11 @@ snapshots:
       '@pothos/core': 4.4.0(graphql@16.10.0)
       graphql: 16.10.0
 
+  '@pothos/plugin-simple-objects@4.1.0(@pothos/core@4.4.0(graphql@16.10.0))(graphql@16.10.0)':
+    dependencies:
+      '@pothos/core': 4.4.0(graphql@16.10.0)
+      graphql: 16.10.0
+
   '@pothos/plugin-with-input@4.1.0(@pothos/core@4.4.0(graphql@16.10.0))(graphql@16.10.0)':
     dependencies:
       '@pothos/core': 4.4.0(graphql@16.10.0)
@@ -4903,6 +4934,20 @@ snapshots:
   '@urql/core@5.1.0(graphql@16.10.0)':
     dependencies:
       '@0no-co/graphql.web': 1.1.1(graphql@16.10.0)
+      wonka: 6.3.4
+    transitivePeerDependencies:
+      - graphql
+
+  '@urql/devtools@2.0.3(@urql/core@5.1.0(graphql@16.10.0))(graphql@16.10.0)':
+    dependencies:
+      '@urql/core': 5.1.0(graphql@16.10.0)
+      graphql: 16.10.0
+      wonka: 6.3.4
+
+  '@urql/exchange-graphcache@7.2.2(@urql/core@5.1.0(graphql@16.10.0))(graphql@16.10.0)':
+    dependencies:
+      '@0no-co/graphql.web': 1.1.1(graphql@16.10.0)
+      '@urql/core': 5.1.0(graphql@16.10.0)
       wonka: 6.3.4
     transitivePeerDependencies:
       - graphql

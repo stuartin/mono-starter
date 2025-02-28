@@ -25,6 +25,12 @@ export const User = builder.drizzleObject("user_table", {
     }),
 });
 
+export const Logout = builder.simpleObject('Logout', {
+    fields: (t) => ({
+        result: t.boolean({ nullable: false }),
+    }),
+});
+
 builder.queryFields(t => ({
     me: t.withAuth({
         user: true
@@ -120,13 +126,20 @@ builder.mutationFields(t => ({
     logout: t.withAuth({
         user: true
     }).field({
-        type: "Boolean",
-        // unauthorizedError: () => new GraphQLError("Not logged in.", ERR.UNAUTHORIZED),
+        type: Logout,
         resolve: async (root, args, ctx) => {
-            await invalidateSession(ctx.db, ctx.session.id);
-            await deleteSessionTokenCookie(ctx.request.cookieStore);
+            try {
+                await invalidateSession(ctx.db, ctx.session.id);
+                await deleteSessionTokenCookie(ctx.request.cookieStore);
 
-            return true;
+                return {
+                    result: true
+                }
+            } catch {
+                return {
+                    result: false
+                }
+            }
         }
     })
 

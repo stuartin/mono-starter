@@ -10,3 +10,22 @@ export const MutationRegister = graphql(`
         }
     }    
 `)
+
+export const MutationLogin = graphql(`
+    mutation Login($input: MutationLoginInput!) {
+        login(
+            input: $input
+        ) {
+            id
+            name
+        }
+    }    
+`)
+
+export const MutationLogout = graphql(`
+    mutation Logout {
+        logout {
+            result
+        }
+    }    
+`)

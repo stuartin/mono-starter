@@ -1,10 +1,16 @@
 import { PUBLIC_SERVER_ENDPOINT } from '$env/static/public';
-import { Client, cacheExchange, fetchExchange } from '@urql/svelte';
+import { Client, debugExchange, fetchExchange, cacheExchange as documentCache } from '@urql/svelte';
+import { cacheExchange } from "@urql/exchange-graphcache"
+import { devtoolsExchange } from '@urql/devtools';
 
 export const client = new Client({
     url: PUBLIC_SERVER_ENDPOINT,
-    exchanges: [cacheExchange, fetchExchange],
-    fetchOptions: () => ({
-        credentials: 'include'
-    })
+    // ORDER MATTERS
+    // exchanges: [devtoolsExchange, debugExchange, documentCache, fetchExchange],
+    exchanges: [
+        devtoolsExchange,
+        debugExchange,
+        cacheExchange(),
+        fetchExchange
+    ],
 });

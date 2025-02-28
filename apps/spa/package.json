@@ -2,6 +2,8 @@
     "name": "@mono/spa",
     "dependencies": {
         "@mono/shared": "workspace:*",
+        "@urql/core": "^5.1.0",
+        "@urql/exchange-graphcache": "^7.2.2",
         "@urql/svelte": "^4.2.2",
         "graphql": "^16.10.0"
     },
@@ -10,6 +12,7 @@
         "@sveltejs/adapter-static": "^3.0.8",
         "@sveltejs/kit": "^2.16.0",
         "@sveltejs/vite-plugin-svelte": "^5.0.0",
+        "@urql/devtools": "^2.0.3",
         "dotenv-cli": "^8.0.0",
         "eslint": "^9.21.0",
         "svelte": "^5.0.0",
