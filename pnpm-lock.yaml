@@ -117,6 +117,9 @@ importers:
 
   apps/spa:
     dependencies:
+      '@mono/server':
+        specifier: workspace:*
+        version: link:../server
       '@mono/shared':
         specifier: workspace:*
         version: link:../../packages/shared
