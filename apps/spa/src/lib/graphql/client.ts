@@ -1,5 +1,5 @@
 import { PUBLIC_SERVER_ENDPOINT } from '$env/static/public';
-import { Client, debugExchange, fetchExchange, cacheExchange as documentCache, mapExchange } from '@urql/core';
+import { Client, debugExchange, fetchExchange, mapExchange } from '@urql/svelte';
 import { cacheExchange } from "@urql/exchange-graphcache"
 import { devtoolsExchange } from '@urql/devtools';
 import { page } from '$app/state';

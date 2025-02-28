@@ -39,6 +39,6 @@
 </script>
 
 <article>
-  <h1>Login</h1>
+  <h1 class="text-2xl">Login</h1>
   <button onclick={login}>Log me ins</button>
 </article>

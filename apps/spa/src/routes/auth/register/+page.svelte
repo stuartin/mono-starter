@@ -1,4 +1,4 @@
 <article>
-  <h1>Register</h1>
+  <h1 class="text-2xl">Register</h1>
   ...
 </article>
