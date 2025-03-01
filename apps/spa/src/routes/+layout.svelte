@@ -3,6 +3,7 @@
   import { setAPI } from "$lib/graphql/api.svelte";
   import { client } from "$lib/graphql/client";
   import { MutationLogout } from "$lib/graphql/mutations";
+  import { goto } from "$app/navigation";
 
   let { children } = $props();
 
@@ -11,32 +12,28 @@
   async function logout() {
     await client.mutation(MutationLogout, {}).toPromise();
     queryMe.reexecute({ requestPolicy: "network-only" });
+    goto("/");
   }
 </script>
 
 <div class="flex flex-col min-h-screen bg-gray-100 text-gray-900">
   <!-- Header -->
   <header class="bg-gray-400 text-white p-4 flex">
-    <h1 class="text-xl font-bold">My Website</h1>
+    <a href="/">
+      <h1 class="text-xl font-bold">My Website</h1>
+    </a>
     <ul class="flex gap-4 grow justify-center">
-      <li>
-        <a href="/">home</a>
-      </li>
-      <li>
-        <a href="/profile">profile</a>
-      </li>
-      <li>
-        <a href="/auth/login">login</a>
-      </li>
-      <li>
-        <a href="/auth/register">register</a>
-      </li>
+      {#if $queryMe.data}
+        <li>
+          <a href="/profile">profile</a>
+        </li>
+      {/if}
     </ul>
     <div>
       {#if $queryMe.data}
         <button onclick={logout}>logout</button>
       {:else}
-        <button onclick={logout}>login</button>
+        <button onclick={() => goto("/auth/login")}>login</button>
       {/if}
     </div>
   </header>
