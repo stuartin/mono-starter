@@ -2,34 +2,41 @@ import { goto } from "$app/navigation";
 import { page } from "$app/state";
 import { client } from "$lib/graphql/client";
 import { MutationLogin, MutationLogout, MutationRegister } from "$lib/graphql/mutations";
-import type { QueryMe } from "$lib/graphql/queries";
+import { QueryMe } from "$lib/graphql/queries";
 import { GraphQLError } from "@mono/server/src/lib/gql/errors";
 import type { ResultOf } from "@mono/shared/graphql";
 import { setContext, getContext } from "svelte";
 
 export class Auth {
+    static _init: ResultOf<typeof QueryMe>['me'] | undefined
     static SESSION_STORAGE_KEY = "user"
-    static redirectToLogin() {
-        const url = new URL(`/auth/login?redirect=${page.url.pathname}`, page.url.origin)
-        goto(url)
+    static redirectToLogin(unauthorized: boolean) {
+        if (
+            unauthorized &&
+            page.url.pathname !== "/" &&
+            !page.url.pathname.startsWith("/auth/")
+        ) {
+            const url = new URL(`/auth/login?redirect=${page.url.pathname}`, page.url.origin)
+            goto(url)
+        }
     }
 
     user: ResultOf<typeof QueryMe>['me'] | undefined = $state()
 
     constructor() {
-        const _user = window.sessionStorage.getItem(Auth.SESSION_STORAGE_KEY)
-        if (_user) {
-            this.user = JSON.parse(atob(_user))
-            window.sessionStorage.removeItem(Auth.SESSION_STORAGE_KEY)
+        if (Auth._init) {
+            this.user = Auth._init
+            Auth._init = undefined
         }
     }
 
     async login(email: string, password: string) {
         try {
+            const redirect = page.url.searchParams.get("redirect") ?? "/";
+
             const _user = await client.mutation(MutationLogin, { input: { email, password } }).toPromise();
             this.user = _user.data?.login
 
-            const redirect = page.url.searchParams.get("redirect") ?? "/";
             goto(redirect);
         } catch (error) {
             if (error instanceof GraphQLError) {
@@ -40,10 +47,8 @@ export class Auth {
 
     async logout() {
         try {
-            const _user = await client.mutation(MutationLogout, {}).toPromise();
-            console.log(_user)
+            await client.mutation(MutationLogout, {}).toPromise();
             this.user = undefined
-            console.log(this.user)
             goto("/");
         } catch (error) {
             if (error instanceof GraphQLError) {

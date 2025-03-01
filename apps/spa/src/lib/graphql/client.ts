@@ -17,13 +17,7 @@ export const client = new Client({
         mapExchange({
             onError(error) {
                 const unauthorized = error.graphQLErrors.some((err) => err.extensions.code === ERR.UNAUTHORIZED.extensions.code)
-                if (
-                    unauthorized &&
-                    page.url.pathname !== "/" &&
-                    !page.url.pathname.startsWith("/auth/login")
-                ) {
-                    Auth.redirectToLogin()
-                }
+                Auth.redirectToLogin(unauthorized)
             },
         }),
         fetchExchange,

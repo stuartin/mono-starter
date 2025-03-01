@@ -6,9 +6,7 @@
   const auth = getAuth();
 
   $effect.pre(() => {
-    if (!auth.user) {
-      Auth.redirectToLogin();
-    }
+    Auth.redirectToLogin(!auth.user);
   });
 </script>
 

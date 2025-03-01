@@ -17,7 +17,14 @@ D1 databases hosted on Cloudflare all use wrangler to perform migrations.
 - `pnpm deploy:stg` - Deploy the migrations and code to staging environment
 - `pnpm deploy:prd` - Deploy the migrations and code to the production envrionment
 
-## @mono/client
+## @mono/spa
+
+## Authentication
+- `urql` client has an exchange to check if server returns an `UNAUTHORIZED` error, if it does, redirect to login
+  - This also contains logic about what routes to exclude/include from auto redirect to login
+- `hooks.client.ts` used to perform an `init` hook to check if user has cookie update auth
+- `setAuth()` initialized at root context for other routes 
+- If you want to always perform an API request, update the `requestPolicy` to `cache-and-network`
 
 ## Proxy
 
