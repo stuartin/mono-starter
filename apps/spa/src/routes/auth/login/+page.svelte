@@ -1,10 +1,14 @@
 <script lang="ts">
-  import { getAuth } from "$lib/auth/auth.svelte";
+  import { Auth, getAuth } from "$lib/auth/auth.svelte";
 
   let email = $state("");
   let password = $state("");
 
   const auth = getAuth();
+
+  $effect.pre(() => {
+    if (Auth._stale) auth.user = undefined;
+  });
 </script>
 
 <article class="grid grid-cols-1 justify-items-center">

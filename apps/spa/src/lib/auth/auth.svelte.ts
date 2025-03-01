@@ -9,6 +9,7 @@ import { setContext, getContext } from "svelte";
 
 export class Auth {
     static _init: ResultOf<typeof QueryMe>['me'] | undefined
+    static _stale: boolean
     static SESSION_STORAGE_KEY = "user"
     static redirectToLogin(unauthorized: boolean) {
         if (
@@ -36,6 +37,7 @@ export class Auth {
 
             const _user = await client.mutation(MutationLogin, { input: { email, password } }).toPromise();
             this.user = _user.data?.login
+            Auth._stale = false
 
             goto(redirect);
         } catch (error) {
@@ -61,6 +63,7 @@ export class Auth {
         try {
             const _user = await client.mutation(MutationRegister, { input: { name, email, password } }).toPromise();
             this.user = _user.data?.register
+            Auth._stale = false
 
             goto("/profile");
         } catch (error) {
