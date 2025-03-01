@@ -1,19 +1,11 @@
 <script lang="ts">
   import "../app.css";
-  import { setAPI } from "$lib/graphql/api.svelte";
-  import { client } from "$lib/graphql/client";
-  import { MutationLogout } from "$lib/graphql/mutations";
   import { goto } from "$app/navigation";
+  import { setAuth } from "$lib/auth/auth.svelte";
 
   let { children } = $props();
 
-  const { queryMe } = setAPI();
-
-  async function logout() {
-    await client.mutation(MutationLogout, {}).toPromise();
-    queryMe.reexecute({ requestPolicy: "network-only" });
-    goto("/");
-  }
+  const auth = setAuth();
 </script>
 
 <div class="flex flex-col min-h-screen bg-gray-100 text-gray-900">
@@ -23,15 +15,16 @@
       <h1 class="text-xl font-bold">My Website</h1>
     </a>
     <ul class="flex gap-4 grow justify-center">
-      {#if $queryMe.data}
+      {#if auth.user}
         <li>
           <a href="/profile">profile</a>
         </li>
       {/if}
     </ul>
     <div>
-      {#if $queryMe.data}
-        <button onclick={logout}>logout</button>
+      <button onclick={() => console.log(auth.user)}>test</button>
+      {#if auth.user}
+        <button onclick={() => auth.logout()}>logout</button>
       {:else}
         <button onclick={() => goto("/auth/login")}>login</button>
       {/if}
@@ -40,6 +33,7 @@
 
   <!-- Main Content -->
   <main class="flex-1 p-6">
+    {auth.user?.id}
     {@render children()}
   </main>
 

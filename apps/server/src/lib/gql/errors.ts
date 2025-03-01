@@ -1,4 +1,5 @@
 export type ErrorExtensions = (typeof ERR)[keyof typeof ERR]["extensions"];
+export { GraphQLError } from 'graphql'
 
 export const ERR = {
     NOT_FOUND: {

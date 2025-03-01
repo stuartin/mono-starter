@@ -1,34 +1,11 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
-  import { getAPI } from "$lib/graphql/api.svelte";
-  import { client } from "$lib/graphql/client";
-  import { MutationRegister } from "$lib/graphql/mutations";
-  import { onDestroy } from "svelte";
+  import { getAuth } from "$lib/auth/auth.svelte";
 
   let name = $state("");
   let email = $state("");
   let password = $state("");
 
-  const { queryMe } = getAPI();
-  let unsubscribe = () => undefined;
-
-  async function register(e: MouseEvent & { currentTarget: EventTarget }) {
-    e.preventDefault();
-
-    const input = { name, email, password };
-    await client.mutation(MutationRegister, { input }).toPromise();
-
-    // redirect after query has fetched
-    queryMe.subscribe(() => {
-      goto("/profile");
-    }, unsubscribe);
-
-    queryMe.reexecute({});
-  }
-
-  onDestroy(() => {
-    unsubscribe();
-  });
+  const auth = getAuth();
 </script>
 
 <article class="grid grid-cols-1 justify-items-center">
@@ -40,7 +17,8 @@
     <input class="outline-1 rounded mb-4" id="email" bind:value={email} />
     <label class="text-sm" for="password">Password</label>
     <input class="outline-1 rounded mb-8" id="password" type="password" bind:value={password} />
-    <button class="bg-blue-300 rounded text-white" onclick={(e) => register(e)}>Register</button>
+    <button class="bg-blue-300 rounded text-white" onclick={() => auth.register(name, email, password)}>Register</button
+    >
   </form>
   <a class="text-xs" href="/auth/login">Have an account? Login</a>
 </article>

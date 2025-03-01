@@ -1,19 +1,17 @@
 <script lang="ts">
-  import { getAPI } from "$lib/graphql/api.svelte";
-  import { redirectToLogin } from "$lib/utils/unauthorized";
-  import { onMount } from "svelte";
+  import { Auth, getAuth } from "$lib/auth/auth.svelte";
 
   let { children } = $props();
 
-  const { queryMe } = getAPI();
+  const auth = getAuth();
 
-  onMount(() => {
-    if (!$queryMe.data) {
-      redirectToLogin();
+  $effect.pre(() => {
+    if (!auth.user) {
+      Auth.redirectToLogin();
     }
   });
 </script>
 
-{#if $queryMe.data}
+{#if auth.user}
   {@render children()}
 {/if}

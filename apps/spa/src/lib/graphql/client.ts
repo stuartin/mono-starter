@@ -4,7 +4,7 @@ import { cacheExchange } from "@urql/exchange-graphcache"
 import { devtoolsExchange } from '@urql/devtools';
 import { page } from '$app/state';
 import { ERR } from "@mono/server/src/lib/gql/errors"
-import { redirectToLogin } from '$lib/utils/unauthorized';
+import { Auth } from '$lib/auth/auth.svelte';
 
 export const client = new Client({
     url: PUBLIC_SERVER_ENDPOINT,
@@ -22,7 +22,7 @@ export const client = new Client({
                     page.url.pathname !== "/" &&
                     !page.url.pathname.startsWith("/auth/login")
                 ) {
-                    redirectToLogin()
+                    Auth.redirectToLogin()
                 }
             },
         }),
